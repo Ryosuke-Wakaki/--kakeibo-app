@@ -55,9 +55,7 @@ pip install -r requirements.txt
 
 ※ PowerShellの実行ポリシーの変更が必要な場合があります。詳細は[Microsoft公式ドキュメント](https://learn.microsoft.com/ja-jp/powershell/module/microsoft.powershell.core/about/about_execution_policies)を参照してください。
 
-### 2. データベースのセットアップ
-
-#### Dockerを使用する場合（推奨）
+### 2. データベースのセットアップ（Dockerを使用）
 
 ```powershell
 # MySQLコンテナの起動
@@ -70,7 +68,7 @@ docker compose ps
 docker compose logs db
 ```
 
-データベースには以下の認証情報でアクセスできます：
+データベースには以下の認証情報でアクセスできます（MySQL Workbenchを使用）：
 - ホスト: localhost
 - ポート: 3306
 - データベース: kakeibo_db
