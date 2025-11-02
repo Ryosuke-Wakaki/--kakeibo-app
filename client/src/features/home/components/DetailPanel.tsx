@@ -1,13 +1,11 @@
-import { useState } from "react";
 import { Box, Card, CardContent, Typography, Button, Stack, Divider } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export const DetailPanel = () => {
-  const [date, setDate] = useState<string>("2024-06-01");
-  const [income, setIncome] = useState<number>(0);
-  const [expense, setExpense] = useState<number>(0);
-  const [balance, setBalance] = useState<number>(0);
+import type { DetailPanelProps } from "../types/props";
+
+export const DetailPanel = (props: DetailPanelProps) => {
+  const { date, income, expense, balance } = props;
 
   return (
     <Box sx={{ p: 2 }}>

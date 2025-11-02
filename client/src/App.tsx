@@ -1,9 +1,9 @@
 // App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Header } from "./components/Header";
-import { Sidebar } from "./components/Sidebar";
-import { Home } from "./pages/Home";
-import { Report } from "./pages/Report";
+import { Header } from "./shared/components/Header";
+import { Sidebar } from "./shared/components/Sidebar";
+import { Home } from "./features/home/Home";
+import { Report } from "./features/report/Report";
 
 export default function App() {
   return (

@@ -1,8 +1,8 @@
 // src/pages/Home.tsx
 import Grid from "@mui/material/Grid";
-import { SummaryCards } from "../components/SummaryCards";
-import { Calendar } from "../components/Calendar";
-import { DetailPanel } from "../components/DetailPanel";
+import { SummaryCards } from "./components/SummaryCards";
+import { Calendar } from "./components/Calendar";
+import { DetailPanel } from "./components/DetailPanel";
 
 export const Home = () => {
   return (

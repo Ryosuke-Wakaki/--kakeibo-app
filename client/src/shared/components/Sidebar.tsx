@@ -7,12 +7,12 @@ export const Sidebar = () => {
 <div style={{ width: 200, background: "#f5f5f5", height: "100vh"}}>
     <ListItemButton component={Link} to="/">
       <ListItemIcon><Icons.Home /></ListItemIcon>
-      <ListItemText primary="Home" />
+      <ListItemText primary="ホーム" />
     </ListItemButton>
 
     <ListItemButton component={Link} to="/report">
       <ListItemIcon><Icons.BarChart /></ListItemIcon>
-      <ListItemText primary="Report" />
+      <ListItemText primary="レポート" />
     </ListItemButton>
   </div>
   )
