@@ -1,17 +1,27 @@
-import { Box, Card, CardContent, Typography, Button, Stack, Divider } from "@mui/material";
+import { 
+  Box, 
+  Card, 
+  CardContent, 
+  Typography, 
+  Button, 
+  Stack, 
+  Divider,
+  List,
+  ListItem,
+  ListItemText
+} from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import MenuIcon from "@mui/icons-material/Menu";
 
 import type { DetailPanelProps } from "../types/props";
 
 export const DetailPanel = (props: DetailPanelProps) => {
-  const { date, income, expense, balance } = props;
+  const { selectedDate, dailyTotal, transactions, onTransactionAdd } = props;
 
   return (
     <Box sx={{ p: 2 }}>
       {/* 日付表示 */}
       <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 2 }}>
-        日時：{date}
+        {selectedDate ? `日時：${selectedDate}` : '日付を選択してください'}
       </Typography>
 
       {/* 収入・支出カード */}
@@ -20,7 +30,7 @@ export const DetailPanel = (props: DetailPanelProps) => {
           <CardContent>
             <Typography variant="body2">収入</Typography>
             <Typography variant="h6" color="primary">
-              ¥{income}
+              ¥{dailyTotal.income.toLocaleString()}
             </Typography>
           </CardContent>
         </Card>
@@ -28,7 +38,7 @@ export const DetailPanel = (props: DetailPanelProps) => {
           <CardContent>
             <Typography variant="body2">支出</Typography>
             <Typography variant="h6" color="error">
-              ¥{expense}
+              ¥{dailyTotal.expense.toLocaleString()}
             </Typography>
           </CardContent>
         </Card>
@@ -39,7 +49,7 @@ export const DetailPanel = (props: DetailPanelProps) => {
         <CardContent>
           <Typography variant="body2">残高</Typography>
           <Typography variant="h6" color="success.main">
-            ¥{balance}
+            ¥{dailyTotal.balance.toLocaleString()}
           </Typography>
         </CardContent>
       </Card>
@@ -47,19 +57,73 @@ export const DetailPanel = (props: DetailPanelProps) => {
       <Divider sx={{ mb: 2 }} />
 
       {/* 内訳セクション */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <MenuIcon fontSize="small" />
-          <Typography variant="body1">内訳</Typography>
-        </Stack>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+          内訳
+        </Typography>
         <Button
           size="small"
           startIcon={<AddCircleOutlineIcon color="primary" />}
           sx={{ textTransform: "none" }}
+          onClick={onTransactionAdd}
         >
           内訳を追加
         </Button>
       </Stack>
+
+      {/* 取引リスト */}
+      {transactions.length === 0 ? (
+        <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
+          この日の取引はありません
+        </Typography>
+      ) : (
+        <List sx={{ p: 0 }}>
+          {transactions.map((transaction) => (
+            <ListItem
+              key={transaction.id}
+              sx={{
+                border: '1px solid #e0e0e0',
+                borderRadius: 1,
+                mb: 1,
+                p: 1.5
+              }}
+            >
+              <ListItemText
+                primary={
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Box>
+                      <Typography variant="body2" component="span" sx={{ fontWeight: 'bold' }}>
+                        {transaction.category}
+                      </Typography>
+                      {transaction.description && (
+                        <Typography variant="caption" component="div" color="text.secondary">
+                          {transaction.description}
+                        </Typography>
+                      )}
+                    </Box>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontWeight: 'bold',
+                        color: transaction.type === '収入' ? 'primary.main' : 'error.main'
+                      }}
+                    >
+                      {transaction.type === '収入' ? '+' : '-'}¥{transaction.amount.toLocaleString()}
+                    </Typography>
+                  </Stack>
+                }
+                secondary={
+                  transaction.paymentMethod && (
+                    <Typography variant="caption" color="text.secondary">
+                      {transaction.paymentMethod}
+                    </Typography>
+                  )
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Box>
   );
 };

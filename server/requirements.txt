@@ -6,3 +6,5 @@ pymysql>=1.1.0
 python-dotenv>=1.0.0
 pydantic>=2.4.2
 pytest>=7.4.3
+pytest-cov>=4.1.0
+httpx>=0.25.0

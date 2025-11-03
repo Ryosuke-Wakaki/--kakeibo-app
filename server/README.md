@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 ※ PowerShellの実行ポリシーの変更が必要な場合があります。詳細は[Microsoft公式ドキュメント](https://learn.microsoft.com/ja-jp/powershell/module/microsoft.powershell.core/about/about_execution_policies)を参照してください。
 
-### 2. データベースのセットアップ（Dockerを使用）
+### 2. データベースのセットアップ（Docker Desktopを起動しておくこと）
 
 ```powershell
 # MySQLコンテナの起動

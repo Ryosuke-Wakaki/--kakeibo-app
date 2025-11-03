@@ -1,13 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from decimal import Decimal
-from datetime import date
-from typing import Optional
+from datetime import date, datetime
+from typing import Optional, Literal
 
 class TransactionBase(BaseModel):
     date: date
-    transaction_type: str  # '01' (income) or '02' (expense)
+    transaction_type: Literal['01', '02']  # '01' (income) or '02' (expense)
     category_id: int
-    amount: Decimal
+    amount: Decimal = Field(ge=0, description="金額は0以上")
     payment_method_id: Optional[int] = None
     description: Optional[str] = None
     tags: Optional[str] = None
@@ -17,8 +17,8 @@ class TransactionCreate(TransactionBase):
 
 class Transaction(TransactionBase):
     id: int
-    created_at: date
-    updated_at: date
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
@@ -35,8 +35,8 @@ class CategoryCreate(CategoryBase):
 
 class Category(CategoryBase):
     id: int
-    created_at: date
-    updated_at: date
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
@@ -53,8 +53,8 @@ class PaymentMethodCreate(PaymentMethodBase):
 
 class PaymentMethod(PaymentMethodBase):
     id: int
-    created_at: date
-    updated_at: date
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True

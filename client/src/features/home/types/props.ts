@@ -1,23 +1,18 @@
 export interface SummaryCardsProps {
-  currentMonth: Date;
+  currentMonth: string;
   totalIncome: number;
   totalExpense: number;
   balance: number;
 }
 
 export interface CalendarProps {
-  selectedDate: Date | null;
-  onDateSelect: (date: Date) => void;
-  dailyTransactions: {
-    date: string;
-    income: number;
-    expense: number;
-  }[];
-  onMonthChange: (date: Date) => void;
+  onMonthChange: (month: string) => void;
+  onDateClick: (date: string) => void;
+  dailySummaries: Record<string, { income: number; expense: number }>;
 }
 
 export interface DetailPanelProps {
-  selectedDate: Date | null;
+  selectedDate: string;
   dailyTotal: {
     income: number;
     expense: number;
