@@ -90,7 +90,7 @@ transactions.filter(t => t.date === formattedDate)
 ### カレンダー統合（FullCalendar）
 - 月変更時の `datesSet` コールバックでは `info.view.currentStart` を使用（`info.start` ではない）
 - 無限ループを防ぐ: API 呼び出し前に月が変更されたかチェック
-- イベント色: 残高が正の場合は緑、負の場合は赤（`Calendar.tsx` を参照）
+- イベント色: 収支が正の場合は緑、負の場合は赤（`Calendar.tsx` を参照）
 
 ### マスターデータ管理
 - コンポーネント内でカテゴリー/支払い方法の ID や名前を**絶対にハードコードしない**

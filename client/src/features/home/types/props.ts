@@ -1,5 +1,4 @@
 export interface SummaryCardsProps {
-  currentMonth: string;
   totalIncome: number;
   totalExpense: number;
   balance: number;
@@ -21,6 +20,7 @@ export interface DetailPanelProps {
   transactions: {
     id: number;
     type: '収入' | '支出';
+    categoryCode: string;
     category: string;
     amount: number;
     paymentMethod?: string;

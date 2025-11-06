@@ -65,9 +65,9 @@ def sample_categories(db_session):
     テスト用のサンプルカテゴリーを作成
     """
     categories = [
-        Category(code="01", name="食費", description="食料品、外食など", display_order=1, is_active=True),
-        Category(code="02", name="交通費", description="電車、バス、タクシーなど", display_order=2, is_active=True),
-        Category(code="03", name="給与", description="月給、ボーナスなど", display_order=3, is_active=True),
+        Category(code="01", name="食費", transaction_type="02", description="食料品、外食など", display_order=1, is_active=True),
+        Category(code="02", name="交通費", transaction_type="02", description="電車、バス、タクシーなど", display_order=2, is_active=True),
+        Category(code="03", name="給与", transaction_type="01", description="月給、ボーナスなど", display_order=3, is_active=True),
     ]
     for category in categories:
         db_session.add(category)

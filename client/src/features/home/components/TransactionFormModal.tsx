@@ -12,8 +12,9 @@ import {
   IconButton
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
 import { useMasterData } from "../../../shared/contexts/MasterDataContext";
+import { useTransactionForm } from "../hooks/useTransactionForm";
+import { isValidForm } from "../utils/transactionFormUtils";
 
 interface TransactionFormModalProps {
   open: boolean;
@@ -31,51 +32,53 @@ export interface TransactionFormData {
   description?: string;
 }
 
-export const TransactionFormModal = ({ open, onClose, onSubmit, selectedDate }: TransactionFormModalProps) => {
+/**
+ * 取引登録フォームモーダル
+ * 
+ * 収入・支出の登録を行うモーダルダイアログ
+ * - 取引種別の切り替え（収入/支出）
+ * - 取引種別に応じたカテゴリーフィルタリング
+ * - 支出の場合のみ支払い方法を表示
+ */
+export const TransactionFormModal = ({ 
+  open, 
+  onClose, 
+  onSubmit, 
+  selectedDate 
+}: TransactionFormModalProps) => {
   const { categories, paymentMethods } = useMasterData();
   
-  const [transactionType, setTransactionType] = useState<'01' | '02'>('02'); // デフォルトは支出
-  const [date, setDate] = useState(selectedDate || new Date().toISOString().split('T')[0]);
-  const [categoryId, setCategoryId] = useState<number>(categories[0]?.id || 0);
-  const [amount, setAmount] = useState<string>('');
-  const [paymentMethodId, setPaymentMethodId] = useState<number>(paymentMethods[0]?.id || 0);
-  const [description, setDescription] = useState<string>('');
+  const {
+    transactionType,
+    date,
+    categoryId,
+    amount,
+    paymentMethodId,
+    description,
+    filteredCategories,
+    setDate,
+    setCategoryId,
+    setAmount,
+    setPaymentMethodId,
+    setDescription,
+    handleTransactionTypeChange,
+    resetForm,
+    getFormData,
+  } = useTransactionForm(selectedDate, categories, paymentMethods);
 
-  // モーダルが開かれた時に日付を更新
-  useState(() => {
-    if (selectedDate) {
-      // yyyy/MM/dd -> yyyy-MM-dd に変換
-      const formattedDate = selectedDate.replace(/\//g, '-');
-      setDate(formattedDate);
-    }
-    // マスターデータが読み込まれたら初期値を設定
-    if (categories.length > 0 && categoryId === 0) {
-      setCategoryId(categories[0].id);
-    }
-    if (paymentMethods.length > 0 && paymentMethodId === 0) {
-      setPaymentMethodId(paymentMethods[0].id);
-    }
-  });
-
+  /**
+   * フォーム送信ハンドラ
+   */
   const handleSubmit = () => {
-    const transaction: TransactionFormData = {
-      date,
-      transaction_type: transactionType,
-      category_id: categoryId,
-      amount: Number(amount),
-      payment_method_id: paymentMethodId,
-      description: description || undefined
-    };
-
-    onSubmit(transaction);
+    onSubmit(getFormData());
     handleClose();
   };
 
+  /**
+   * モーダルクローズハンドラ
+   */
   const handleClose = () => {
-    // フォームをリセット
-    setTransactionType('02');
-    setAmount('');
-    setDescription('');
+    resetForm();
     onClose();
   };
 
@@ -101,7 +104,7 @@ export const TransactionFormModal = ({ open, onClose, onSubmit, selectedDate }: 
           <ToggleButtonGroup
             value={transactionType}
             exclusive
-            onChange={(_, newValue) => newValue && setTransactionType(newValue)}
+            onChange={(_, newValue) => handleTransactionTypeChange(newValue)}
             fullWidth
           >
             <ToggleButton 
@@ -148,7 +151,7 @@ export const TransactionFormModal = ({ open, onClose, onSubmit, selectedDate }: 
             onChange={(e) => setCategoryId(Number(e.target.value))}
             fullWidth
           >
-            {categories.map((category) => (
+            {filteredCategories.map((category) => (
               <MenuItem key={category.id} value={category.id}>
                 {category.name}
               </MenuItem>
@@ -165,20 +168,22 @@ export const TransactionFormModal = ({ open, onClose, onSubmit, selectedDate }: 
             placeholder="0"
           />
 
-          {/* 支払方法 */}
-          <TextField
-            select
-            label="支払方法"
-            value={paymentMethodId}
-            onChange={(e) => setPaymentMethodId(Number(e.target.value))}
-            fullWidth
-          >
-            {paymentMethods.map((method) => (
-              <MenuItem key={method.id} value={method.id}>
-                {method.name}
-              </MenuItem>
-            ))}
-          </TextField>
+          {/* 支払方法（支出の場合のみ表示） */}
+          {transactionType === '02' && (
+            <TextField
+              select
+              label="支払方法"
+              value={paymentMethodId}
+              onChange={(e) => setPaymentMethodId(Number(e.target.value))}
+              fullWidth
+            >
+              {paymentMethods.map((method) => (
+                <MenuItem key={method.id} value={method.id}>
+                  {method.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
 
           {/* 内容 */}
           <TextField
@@ -198,10 +203,10 @@ export const TransactionFormModal = ({ open, onClose, onSubmit, selectedDate }: 
           variant="contained"
           onClick={handleSubmit}
           fullWidth
-          disabled={!amount || Number(amount) <= 0}
+          disabled={!isValidForm(amount)}
           sx={{ 
-            backgroundColor: '#f44336',
-            '&:hover': { backgroundColor: '#d32f2f' }
+            backgroundColor: '#2196f3',
+            '&:hover': { backgroundColor: '#1976d2' }
           }}
         >
           保存

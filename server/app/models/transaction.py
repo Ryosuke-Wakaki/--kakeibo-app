@@ -13,6 +13,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String(2), unique=True, nullable=False)
     name = Column(String(50), nullable=False)
+    transaction_type = Column(CHAR(2), nullable=False)  # '01': 収入, '02': 支出
     description = Column(String(255))
     display_order = Column(Integer, nullable=False, default=0)
     is_active = Column(Boolean, nullable=False, default=True)

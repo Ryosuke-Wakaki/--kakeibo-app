@@ -15,6 +15,7 @@ export interface Category {
   id: number;
   code: string;
   name: string;
+  transaction_type: '01' | '02';  // '01': 収入, '02': 支出
   description?: string;
   display_order: number;
   created_at: string;

@@ -48,6 +48,7 @@ export const Calendar = (props: CalendarProps ) => {
         locale="ja"
         selectable={true}
         events={events}
+        fixedWeekCount={false}
         dateClick={(info) => {
           const formattedDate = info.dateStr.replace(/-/g, "/"); // yyyy/MM/dd
           onDateClick(formattedDate);

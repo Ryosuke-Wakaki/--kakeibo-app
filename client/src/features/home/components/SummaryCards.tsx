@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 import type { SummaryCardsProps } from "../types/props";
 
-export const SummaryCards = ({ currentMonth, totalIncome, totalExpense, balance }: SummaryCardsProps) => {
+export const SummaryCards = ({totalIncome, totalExpense, balance }: SummaryCardsProps) => {
   return (
     <div>
       <Grid container spacing={2}>
@@ -24,7 +24,7 @@ export const SummaryCards = ({ currentMonth, totalIncome, totalExpense, balance 
         <Grid size={4}>
           <Card sx={{ backgroundColor: "#4caf50", color: "#fff" }}>
             <CardContent>
-              <Typography>残高</Typography>
+              <Typography>収支</Typography>
               <Typography variant="h5">¥{balance.toLocaleString()}</Typography>
             </CardContent>
           </Card>

@@ -26,6 +26,7 @@ class Transaction(TransactionBase):
 class CategoryBase(BaseModel):
     code: str
     name: str
+    transaction_type: Literal['01', '02']  # '01': 収入, '02': 支出
     description: Optional[str] = None
     display_order: int = 0
     is_active: bool = True
